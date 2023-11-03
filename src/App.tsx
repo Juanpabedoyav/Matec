@@ -1,111 +1,35 @@
 import { useContext, useState } from "react"
 import './App.css'
 import { ShoppingContext } from "./context/Shopping/ShoppingContext"
-import { Product } from "./interfaces/products"
+import { Product, defaultProducts } from "./interfaces/products"
 import { Search } from "./components/Search"
-
-
-const INITIAL_ITEMS = {
-  "products": [
-    {
-      "id": crypto.randomUUID(),
-      "name": "iPhone 14 Pro Ma",
-      "unit_price": 5000,
-      "stock": 5,
-      "type": "technology",
-      "quantity":   1,
-      "totalprice": null
-    },
-    {
-      "id": crypto.randomUUID(),
-      "name": "Timon Racing Carrera",
-      "unit_price": 8000,
-      "stock": 2,
-      "type": "technology",
-      "quantity":   1,
-      "totalprice": null
-    },
-    {
-      "id": crypto.randomUUID(),
-      "name": "Control joystick inalámbrico",
-      "unit_price": 1000,
-      "stock": 1,
-      "type": "technology",
-      "quantity":   1,
-      "totalprice": null
-    },
-    {
-      "id": crypto.randomUUID(),
-      "name": "Bicicicleta Roadmaster",
-      "unit_price": 1800,
-      "stock": 1,
-      "type": "sport",
-      "quantity":   1,
-      "totalprice": null
-    },
-    {
-      "id": crypto.randomUUID(),
-      "name": "Bicicleta Todo Terreno",
-      "unit_price": 200,
-      "stock": 0,
-      "type": "sport",
-      "quantity":   1,
-      "totalprice": null
-    },
-    {
-      "id": crypto.randomUUID(),
-      "name": "Balon De Futbol",
-      "unit_price": 120,
-      "stock": 6,
-      "type": "sport",
-      "quantity":   1,
-      "totalprice": null
-    },
-    {
-      "id": crypto.randomUUID(),
-      "name": "Ducha Electrica",
-      "unit_price": 120,
-      "stock": 8,
-      "type": "building",
-      "quantity":   1,
-      "totalprice": null
-    },
-    {
-      "id": crypto.randomUUID(),
-      "name": "Gabinete De Baño",
-      "unit_price": 650,
-      "stock": 10,
-      "type": "building",
-      "quantity":   1,
-      "totalprice": null
-    },
-    {
-      "id": crypto.randomUUID(),
-      "name": "Mueble Sanitario",
-      "unit_price": 900,
-      "stock": 2,
-      "type": "building",
-      "quantity":   1,
-      "totalprice": null
-    }
-    
-  ]
-}
+import dataProducts from "./data/data.json"
 
 
 function App() {
-
+//context shopping cart
 const {addProduct,  state, totalOrder} = useContext(ShoppingContext)
-
+//filter by type state
 const  [filterType, setFilterType] = useState<Product[]>([])
 
+const products: defaultProducts[] = dataProducts.products
+//clone products structure
+const cloneProductsStructure : Product[] = products.map((product) => {
+  return{
+    ...product,
+    id: crypto.randomUUID(),
+    quantity: 1,
+    totalprice: null
+  }
+})
+//add product to cart High Order Function
 const handleAddProduct = (item :Product, stock: number) =>()=> {
   if (stock !== 0 ) {
     addProduct(item)
     item.stock = stock - 1
     }
   }
-
+//download JSON funtion
 const downloadJSON = () => {
   const fileStructure = {
     products: state.cart,
@@ -123,15 +47,16 @@ const downloadJSON = () => {
   a.click();
   URL.revokeObjectURL(url);
 };
-
+//filter by type function
 const filterByType = (type: string )  => {
-  const filter = INITIAL_ITEMS.products.filter((item) => item.type === type)
+  const filter = cloneProductsStructure.filter((item) => item.type === type)
   setFilterType(filter)
   if(type === "All") {
-    setFilterType(INITIAL_ITEMS.products)
+    setFilterType(cloneProductsStructure)
   }
 }
-let filter = INITIAL_ITEMS.products.map((item) =>  item.type)
+//get filter type from JSON and remove duplicates
+let filter = cloneProductsStructure.map((item) =>  item.type)
 filter = [...new Set(filter)]
 
 return (
@@ -141,7 +66,7 @@ return (
         <h1>Alternova Shop</h1>
           <ul>
             <li><a href="#">Home</a></li>
-            <li><a href="#">Cart</a></li>
+            <li><a href="#">Cart <strong>{state.cart.reduce((acc, curr) => acc + curr.quantity!, 0)}</strong></a></li>
           </ul>
         </nav>
       </header>
