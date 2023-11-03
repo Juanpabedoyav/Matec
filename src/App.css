@@ -9,6 +9,7 @@
   display: grid;
   grid-template-columns: 400px 400px ;
   gap: 1rem;
+  grid-auto-rows: max-content;
 }
 #list{
   width: 250px;
@@ -39,4 +40,22 @@ li a{
   color: #fff;
   font-size: 1.2rem;
   font-weight: bold;  
+}
+
+.products-cart{
+  display: flex;
+  flex-direction: column;
+}
+#list-cart{
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+
+.alert{
+  z-index: 10;
+  position: absolute;
+  top: 0;
 }
