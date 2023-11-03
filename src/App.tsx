@@ -1,107 +1,28 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import './App.css'
 import { ShoppingContext } from "./context/Shopping/ShoppingContext"
 import { Product } from "./interfaces/products"
-
-
-const INITIAL_ITEMS = {
-  "products": [
-    {
-      "id": crypto.randomUUID(),
-      "name": "iPhone 14 Pro Ma",
-      "unit_price": 5000,
-      "stock": 5,
-      "type": "technology",
-      "quantity":   1,
-      "totalprice": null
-    },
-    {
-      "id": crypto.randomUUID(),
-      "name": "Timon Racing Carrera",
-      "unit_price": 8000,
-      "stock": 2,
-      "type": "technology",
-      "quantity":   1,
-      "totalprice": null
-    },
-    {
-      "id": crypto.randomUUID(),
-      "name": "Control joystick inalámbrico",
-      "unit_price": 1000,
-      "stock": 1,
-      "type": "technology",
-      "quantity":   1,
-      "totalprice": null
-    },
-    {
-      "id": crypto.randomUUID(),
-      "name": "Bicicicleta Roadmaster",
-      "unit_price": 1800,
-      "stock": 1,
-      "type": "sport",
-      "quantity":   1,
-      "totalprice": null
-    },
-    {
-      "id": crypto.randomUUID(),
-      "name": "Bicicleta Todo Terreno",
-      "unit_price": 200,
-      "stock": 0,
-      "type": "sport",
-      "quantity":   1,
-      "totalprice": null
-    },
-    {
-      "id": crypto.randomUUID(),
-      "name": "Balon De Futbol",
-      "unit_price": 120,
-      "stock": 6,
-      "type": "sport",
-      "quantity":   1,
-      "totalprice": null
-    },
-    {
-      "id": crypto.randomUUID(),
-      "name": "Ducha Electrica",
-      "unit_price": 120,
-      "stock": 8,
-      "type": "building",
-      "quantity":   1,
-      "totalprice": null
-    },
-    {
-      "id": crypto.randomUUID(),
-      "name": "Gabinete De Baño",
-      "unit_price": 650,
-      "stock": 10,
-      "type": "building",
-      "quantity":   1,
-      "totalprice": null
-    },
-    {
-      "id": crypto.randomUUID(),
-      "name": "Mueble Sanitario",
-      "unit_price": 900,
-      "stock": 2,
-      "type": "building",
-      "quantity":   1,
-      "totalprice": null
-    }
-    
-  ]
-}
+import { Search } from "./components/Search"
+import { ProductContext } from "./context/Products/ProductsContext"
+// import dataProducts from "./data/data.json"
 
 
 function App() {
+//context shopping cart
 const {addProduct,  state, totalOrder} = useContext(ShoppingContext)
+//context products
+const {products} = useContext(ProductContext)
+//filter by type state
+const  [filterType, setFilterType] = useState<Product[]>([])
 
-const handleAddProduct = (item :Product, stock: number) => {
+//add product to cart High Order Function
+const handleAddProduct = (item :Product, stock: number) =>()=> {
   if (stock !== 0 ) {
     addProduct(item)
     item.stock = stock - 1
     }
   }
-
+//download JSON funtion
 const downloadJSON = () => {
   const fileStructure = {
     products: state.cart,
@@ -119,8 +40,17 @@ const downloadJSON = () => {
   a.click();
   URL.revokeObjectURL(url);
 };
-
-
+//filter by type function
+const filterByType = (type: string )  => {
+  const filter = products.filter((item) => item.type === type)
+  setFilterType(filter)
+  if(type === "All") {
+    setFilterType(products)
+  }
+}
+//get filter type from JSON and remove duplicates
+let filter = products.map((item) =>  item.type)
+filter = [...new Set(filter)]
 
 return (
     <main>
@@ -129,30 +59,58 @@ return (
         <h1>Alternova Shop</h1>
           <ul>
             <li><a href="#">Home</a></li>
-            <li><a href="#">Cart</a></li>
+            <li><a href="#">Cart <strong>{state.cart.reduce((acc, curr) => acc + curr.quantity!, 0)}</strong></a></li>
           </ul>
         </nav>
       </header>
+      <section className="filterBy">
+        <p>Filter By:</p>
+        <button onClick={() => filterByType('All')}>All</button>
+        {
+          filter.map((type) => {
+            return (
+              <button key={type} onClick={ () =>filterByType(type)}>{type}</button>
+              )
+            })
+          }
+      </section>
+      <Search/>
+
       <section className="x">
          <section className="products">
-        {
-          INITIAL_ITEMS.products.map((item) => {
-            return (
-              <article id="list" key={item.id}>
-                <h3>{item.name}</h3>
-                <p>{item.unit_price}</p>
-                <p>{item.type}</p>
-                <section>
-                  {item.stock == 0 ? <p>Out of stock</p> : <p>Stock: {item.stock}</p>} 
-                  <button onClick = { () => handleAddProduct(item, item.stock)}>Add to Cart</button>
-                </section>
-              </article>
+          {
+            filterType.length === 0 ?
+            products.map((item) => {
+              return (
+                <article id="list" key={item.id}>
+                  <h3>{item.name}</h3>
+                  <p>{item.unit_price}</p>
+                  <p>{item.type}</p>
+                  <section>
+                    {item.stock == 0 ? <p>Out of stock</p> : <p>Stock: {item.stock}</p>} 
+                    <button onClick = { handleAddProduct(item, item.stock)}>Add to Cart</button>
+                  </section>
+                </article>
+              )
+            }
+            ):
+              filterType.map((item) => {
+                return (
+                  <article id="list" key={item.id}>
+                    <h3>{item.name}</h3>
+                    <p>{item.unit_price}</p>
+                    <p>{item.type}</p>
+                    <section>
+                      {item.stock == 0 ? <p>Out of stock</p> : <p>Stock: {item.stock}</p>} 
+                      <button onClick = { handleAddProduct(item, item.stock)}>Add to Cart</button>
+                    </section>
+                  </article>
+                )
+              
+              }
             )
-          
           }
-          )
-        }
-      </section>
+        </section>
         <aside>
           <h2>Cart</h2>
           <section className="products-cart">
