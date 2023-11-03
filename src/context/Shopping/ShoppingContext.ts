@@ -7,6 +7,7 @@ export interface ShoppingContextProps {
         cart: Product[],
     }
     addProduct: (payload: Product) => void,
+    totalOrder: () => number,
     toogleOrder: () => void,
     
 }
