@@ -1,0 +1,42 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  width: 100%;
+}
+
+.products{
+  display: grid;
+  grid-template-columns: 400px 400px ;
+  gap: 1rem;
+}
+#list{
+  width: 250px;
+}
+
+.x{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+nav{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+
+}
+ul{
+  display: flex;
+  list-style: none;
+}
+li{
+  margin-left: 2rem;
+}  
+li a{
+  text-decoration: none;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;  
+}
