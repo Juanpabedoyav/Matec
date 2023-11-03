@@ -1,7 +1,8 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import './App.css'
 import { ShoppingContext } from "./context/Shopping/ShoppingContext"
 import { Product } from "./interfaces/products"
+import { Search } from "./components/Search"
 
 
 const INITIAL_ITEMS = {
@@ -93,9 +94,12 @@ const INITIAL_ITEMS = {
 
 
 function App() {
+
 const {addProduct,  state, totalOrder} = useContext(ShoppingContext)
 
-const handleAddProduct = (item :Product, stock: number) => {
+const  [filterType, setFilterType] = useState<Product[]>([])
+
+const handleAddProduct = (item :Product, stock: number) =>()=> {
   if (stock !== 0 ) {
     addProduct(item)
     item.stock = stock - 1
@@ -120,7 +124,15 @@ const downloadJSON = () => {
   URL.revokeObjectURL(url);
 };
 
-
+const filterByType = (type: string )  => {
+  const filter = INITIAL_ITEMS.products.filter((item) => item.type === type)
+  setFilterType(filter)
+  if(type === "All") {
+    setFilterType(INITIAL_ITEMS.products)
+  }
+}
+let filter = INITIAL_ITEMS.products.map((item) =>  item.type)
+filter = [...new Set(filter)]
 
 return (
     <main>
@@ -133,26 +145,39 @@ return (
           </ul>
         </nav>
       </header>
+      <section className="filterBy">
+        <p>Filter By:</p>
+        <button onClick={() => filterByType('All')}>All</button>
+        {
+          filter.map((type) => {
+            return (
+              <button key={type} onClick={ () =>filterByType(type)}>{type}</button>
+              )
+            })
+          }
+      </section>
+      <Search/>
+
       <section className="x">
          <section className="products">
-        {
-          INITIAL_ITEMS.products.map((item) => {
-            return (
-              <article id="list" key={item.id}>
-                <h3>{item.name}</h3>
-                <p>{item.unit_price}</p>
-                <p>{item.type}</p>
-                <section>
-                  {item.stock == 0 ? <p>Out of stock</p> : <p>Stock: {item.stock}</p>} 
-                  <button onClick = { () => handleAddProduct(item, item.stock)}>Add to Cart</button>
-                </section>
-              </article>
+          {
+            filterType.map((item) => {
+              return (
+                <article id="list" key={item.id}>
+                  <h3>{item.name}</h3>
+                  <p>{item.unit_price}</p>
+                  <p>{item.type}</p>
+                  <section>
+                    {item.stock == 0 ? <p>Out of stock</p> : <p>Stock: {item.stock}</p>} 
+                    <button onClick = { handleAddProduct(item, item.stock)}>Add to Cart</button>
+                  </section>
+                </article>
+              )
+            
+            }
             )
-          
           }
-          )
-        }
-      </section>
+        </section>
         <aside>
           <h2>Cart</h2>
           <section className="products-cart">

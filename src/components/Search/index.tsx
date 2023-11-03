@@ -108,10 +108,14 @@ export const Search = () => {
     };
 
   return (
-    <>
+    <section>
         <input onChange={handleSearch} placeholder='Search your product ...' />
-        {filterProducts.length > 0  ? <SearchResult products={filterProducts} /> : <p>Product not found</p>}
-
-    </>
+        {filterProducts.length > 0  ? 
+      <>
+        <h2>Search Result</h2>
+        <SearchResult products={filterProducts} /> 
+      </>
+        : <p>Product not found</p>}
+    </section>
   );
 };
