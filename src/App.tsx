@@ -1,27 +1,20 @@
 import { useContext, useState } from "react"
 import './App.css'
 import { ShoppingContext } from "./context/Shopping/ShoppingContext"
-import { Product, defaultProducts } from "./interfaces/products"
+import { Product } from "./interfaces/products"
 import { Search } from "./components/Search"
-import dataProducts from "./data/data.json"
+import { ProductContext } from "./context/Products/ProductsContext"
+// import dataProducts from "./data/data.json"
 
 
 function App() {
 //context shopping cart
 const {addProduct,  state, totalOrder} = useContext(ShoppingContext)
+//context products
+const {products} = useContext(ProductContext)
 //filter by type state
 const  [filterType, setFilterType] = useState<Product[]>([])
 
-const products: defaultProducts[] = dataProducts.products
-//clone products structure
-const cloneProductsStructure : Product[] = products.map((product) => {
-  return{
-    ...product,
-    id: crypto.randomUUID(),
-    quantity: 1,
-    totalprice: null
-  }
-})
 //add product to cart High Order Function
 const handleAddProduct = (item :Product, stock: number) =>()=> {
   if (stock !== 0 ) {
@@ -49,14 +42,14 @@ const downloadJSON = () => {
 };
 //filter by type function
 const filterByType = (type: string )  => {
-  const filter = cloneProductsStructure.filter((item) => item.type === type)
+  const filter = products.filter((item) => item.type === type)
   setFilterType(filter)
   if(type === "All") {
-    setFilterType(cloneProductsStructure)
+    setFilterType(products)
   }
 }
 //get filter type from JSON and remove duplicates
-let filter = cloneProductsStructure.map((item) =>  item.type)
+let filter = products.map((item) =>  item.type)
 filter = [...new Set(filter)]
 
 return (
@@ -86,7 +79,8 @@ return (
       <section className="x">
          <section className="products">
           {
-            filterType.map((item) => {
+            filterType.length === 0 ?
+            products.map((item) => {
               return (
                 <article id="list" key={item.id}>
                   <h3>{item.name}</h3>
@@ -98,8 +92,22 @@ return (
                   </section>
                 </article>
               )
-            
             }
+            ):
+              filterType.map((item) => {
+                return (
+                  <article id="list" key={item.id}>
+                    <h3>{item.name}</h3>
+                    <p>{item.unit_price}</p>
+                    <p>{item.type}</p>
+                    <section>
+                      {item.stock == 0 ? <p>Out of stock</p> : <p>Stock: {item.stock}</p>} 
+                      <button onClick = { handleAddProduct(item, item.stock)}>Add to Cart</button>
+                    </section>
+                  </article>
+                )
+              
+              }
             )
           }
         </section>
