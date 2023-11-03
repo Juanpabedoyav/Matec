@@ -1,6 +1,7 @@
 import { useContext } from "react"
 import './App.css'
 import { ShoppingContext } from "./context/Shopping/ShoppingContext"
+import { Product } from "./interfaces/products"
 
 
 const INITIAL_ITEMS = {
@@ -94,9 +95,14 @@ const INITIAL_ITEMS = {
 function App() {
 const {addProduct,  state, totalOrder} = useContext(ShoppingContext)
 
+const handleAddProduct = (item :Product, stock: number) => {
+  if (stock !== 0 ) {
+    addProduct(item)
+    item.stock = stock - 1
+    }
+  }
 
 const downloadJSON = () => {
-
   const fileStructure = {
     products: state.cart,
     totalOrder: totalOrder(),
@@ -111,9 +117,11 @@ const downloadJSON = () => {
   a.href = url;
   a.download = 'datos.json';
   a.click();
-
   URL.revokeObjectURL(url);
 };
+
+
+
 return (
     <main>
       <header>
@@ -135,11 +143,12 @@ return (
                 <p>{item.unit_price}</p>
                 <p>{item.type}</p>
                 <section>
-                  <p>Stock: {item.stock}</p>
-                  <button onClick = { () => addProduct(item)}>Add to Cart</button>
+                  {item.stock == 0 ? <p>Out of stock</p> : <p>Stock: {item.stock}</p>} 
+                  <button onClick = { () => handleAddProduct(item, item.stock)}>Add to Cart</button>
                 </section>
               </article>
             )
+          
           }
           )
         }
