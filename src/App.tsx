@@ -87,7 +87,7 @@ const filterByType = (type: string= 'ALL' )  => {
  
 }
 //get filter type from JSON and remove duplicates
-let filter = products && products.map((item) =>  item.type) 
+let filter = products && products.map((item) =>  item.type).concat('All').reverse()
 filter = [...new Set(filter)]
 
 const totalCart = state?.cart.reduce((acc, item) => acc + item.quantity, 0)
@@ -104,21 +104,19 @@ return (
           </ul>
         </nav>
       </header>
-      <section className="filterBy">
-        <p>Filter By:</p>
-        <button onClick={() => filterByType('ALL')}>All</button>
+        <Search/>
+      <section className="filter-by">
         {
           filter.map((type) => {
             return (
-              <button key={type} onClick={ () =>filterByType(type)}>{type}</button>
+              <a className="filter-type" href={`#${type}`} key={type} onClick={ () =>filterByType(type)}>{type}</a>
               )
             })
           }
       </section>
-      <Search/>
       <button onClick={backPage}>Back</button>
       <button onClick={nextPage}>Next</button>
-      <section className="x">
+      <section className="layaout">
          <section className="products">
           {
            filterType.length === 0 ?
