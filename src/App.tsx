@@ -13,14 +13,14 @@ const {addProduct,  state} = useContext(ShoppingContext)
 const {products} = useContext(ProductContext)
 //filter by type state
 const  [filterType, setFilterType] = useState<Product[]>([])
-const  [currentPage, setCurrentPage] = useState(0)
+const  [currentPage, setCurrentPage] = useState(1)
 
 const productsPerPage = () => {
   return products.slice(currentPage, currentPage+ 5);
 }
 
 const nextPage = () => {
-
+  if(products.length > currentPage + 5)
   setCurrentPage(currentPage + 5)
 }
 const backPage = () => {
@@ -67,7 +67,7 @@ const downloadJSON = () => {
 };
 //filter by type function
 const filterByType = (type: string= 'ALL' )  => {
-  const filter = products.filter((item) => item.type === type)
+  const filter = products.filter((item) => item.type === type).slice(currentPage, currentPage+ 5);
   setFilterType(filter)
   setCurrentPage(0) 
  
