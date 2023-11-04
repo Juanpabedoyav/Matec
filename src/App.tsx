@@ -126,12 +126,12 @@ return (
               return (
                 <article className="list" key={item.id}>
                   <img height={200}  loading="lazy" src="https://flowbite.com/docs/images/products/apple-watch.png" alt={item.name} />
-                  <section className="description-product">
                     <h3>{item.name}</h3>
-                    <p>${item.unit_price}</p>
-                    <p>{item.type}</p>
-                    {item.stock == 0 ? <p>Out of stock</p> : <p>Stock: {item.stock}</p>} 
+                  <section className="description-product">
+                    <p> <strong>${item.unit_price}</strong></p>
+                    <p>Category: <strong>{item.type}</strong></p>
                   </section>
+                   {item.stock == 0 ? <p className="out-stock">🚨 Out of stock</p> : <p>Stock: <strong>{item.stock}</strong></p>} 
                   <section>
                     <form onSubmit={handlerSubmit(item)}>
                      <input 
@@ -150,12 +150,12 @@ return (
                 return (
                   <article className="list" key={item.id}>
                     <img height={200} loading="lazy"  src="https://flowbite.com/docs/images/products/apple-watch.png" alt={item.name} />
-                    <section className="description-product">
                       <h3>{item.name}</h3>
-                      <p>${item.unit_price}</p>
-                      <p>{item.type}</p>
-                      {item.stock == 0 ? <p>Out of stock</p> : <p>Stock: {item.stock}</p>} 
+                    <section className="description-product">
+                    <p><strong>${item.unit_price}</strong></p>
+                    <p>Category: <strong>{item.type}</strong></p>
                     </section>
+                      {item.stock == 0 ? <p className="out-stock">🚨 Out of stock</p> : <p>Stock: <strong>{item.stock}</strong></p>} 
                     <section>
                     <form onSubmit={handlerSubmit(item)}>
                      <input 
