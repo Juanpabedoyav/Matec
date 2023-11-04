@@ -184,17 +184,19 @@ return (
             return (
               <article className="list-cart" key={item.id}>
                 <h3>{item.name}</h3>
-                <p>Quantity: x{item.quantity}</p>
-                <p>Unit Price: ${item.unit_price}</p>
-                <p>Total Price:${item.totalprice}</p>
+                <p>Quantity: <strong>x{item.quantity}</strong></p>
+                <p>Unit Price: <strong>${item.unit_price}</strong></p>
+                <p>Total Price: <strong>${item.totalprice}</strong></p>
               </article>
             )
           }
           )
         }
       </section>
-          <p>Total Order: ${totalOrder}</p>
-          <button onClick={downloadJSON}>Total Order</button>
+          <section className="generate-ticket">
+            <p>Total Order: <strong>${totalOrder}</strong></p>
+            <button onClick={downloadJSON}>Total Order</button>
+          </section>
         </aside>
       </section>
     </main>

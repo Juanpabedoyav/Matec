@@ -47,6 +47,7 @@ form{
   display: flex;
   flex-direction: row;
   width: 100%;
+  gap: 1rem;
 }
 
 nav{
@@ -74,14 +75,21 @@ aside{
   border-radius: 0.5rem;
   max-width: 100%;
   width: 100%;
-  padding: 1rem;
+  padding: 1.2rem;
   background-color: #ffffff12;
 }
 aside:hover{
   outline: 1px solid #646cff;
 }
 
-
+aside h2{
+  font-size: 1.8rem;
+  margin: 0;
+  margin-bottom: 0.2rem;
+}
+aside h3{
+  font-size: 1rem;
+}
 .products-cart{
   display: flex;
   flex-direction: column;
@@ -92,7 +100,16 @@ aside:hover{
   align-items: center;
   justify-content: flex-start;
 }
+.list-cart h3{
+  width: 40%;
+}
+.list-cart p{
+  width: 30%;
+}
 
+.list-cart {
+  border-bottom : .1rem solid #646cff9f;
+}
 
 .alert{
   z-index: 10;
@@ -114,4 +131,9 @@ img{
   margin: 0.5rem 0;
   display: inline-block;
   font-weight: bold;
+}
+.generate-ticket{
+  display: flex;
+  margin: 1rem 0;
+  justify-content: space-between;
 }
