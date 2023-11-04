@@ -20,7 +20,7 @@ const useInitialState =() =>{
     state.cart.map((item) => item.id === payload.id ? 
     { ...item, quantity: item.quantity + 1, totalprice: (item.quantity + 1) * item.unit_price} 
     : item) 
-    : [...state.cart, { ...payload, quantity: 1, totalprice: payload.unit_price }];
+    : [...state.cart, { ...payload,  totalprice: payload.unit_price * payload.quantity }];
     
     return setState({
         ...state,
