@@ -16,7 +16,7 @@ const  [filterType, setFilterType] = useState<Product[]>([])
 const  [currentPage, setCurrentPage] = useState(1)
 
 const productsPerPage = () => {
-  return products.slice(currentPage, currentPage+ 5);
+  return products?.slice(currentPage, currentPage+ 5);
 }
 
 const nextPage = () => {
@@ -29,12 +29,26 @@ const backPage = () => {
 }
 
 //add product to cart High Order Function
-const handleAddProduct = (item :Product, stock: number) =>()=> {
-  if (stock !== 0 ) {
-    addProduct(item)
-    item.stock = stock - 1
+// const handleAddProduct = (item :Product, stock: number) =>()=> {
+//   if (stock !== 0 ) {
+//     addProduct(item)
+//     item.stock = stock - item.quantity
+//     }
+//   }
+
+const handlerSubmit = (item :Product) => (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault()
+  const quantity = e.currentTarget.quantity.value
+  const newItemCustomQuantity = {...item, quantity: Number(quantity)}
+  if (item.stock !== 0 && quantity <= item.stock) {
+    item.stock = item.stock - quantity
+    addProduct(newItemCustomQuantity)
+    }else{
+      alert('Out of stock')
     }
-  }
+
+ 
+} 
 //download JSON funtion
 const downloadJSON = () => {
   const clientProductDetail = state.cart.map((item) => {
@@ -116,7 +130,14 @@ return (
                   <p>{item.type}</p>
                   <section>
                     {item.stock == 0 ? <p>Out of stock</p> : <p>Stock: {item.stock}</p>} 
-                    <button onClick = { handleAddProduct(item, item.stock)}>Add to Cart</button>
+                    <form onSubmit={handlerSubmit(item)}>
+                     <input 
+                     name="quantity"
+                     type="number" 
+                     defaultValue={1}
+                     />
+                    <button type="submit">Add to Cart</button>
+                    </form>
                   </section>
                 </article>
               )
@@ -130,7 +151,14 @@ return (
                     <p>{item.type}</p>
                     <section>
                       {item.stock == 0 ? <p>Out of stock</p> : <p>Stock: {item.stock}</p>} 
-                      <button onClick = { handleAddProduct(item, item.stock)}>Add to Cart</button>
+                    <form onSubmit={handlerSubmit(item)}>
+                     <input 
+                     name="quantity"
+                     type="number" 
+                     defaultValue={1}
+                     />
+                    <button type="submit">Add to Cart</button>
+                    </form>
                     </section>
                   </article>
                 )
@@ -145,8 +173,8 @@ return (
           <h2>Cart</h2>
           <section className="products-cart">
         {
-          state.cart.length === 0  ? <p>Cart is empty</p> : 
-          state.cart && state.cart.map((item) => {
+          state?.cart.length === 0  ? <p>Cart is empty</p> : 
+          state?.cart && state.cart.map((item) => {
             return (
               <article className="list-cart" key={item.id}>
                 <h3>{item.name}</h3>
