@@ -16,7 +16,7 @@ const  [filterType, setFilterType] = useState<Product[]>([])
 const  [currentPage, setCurrentPage] = useState(1)
 
 const productsPerPage = () => {
-  return products.slice(currentPage, currentPage+ 5);
+  return products?.slice(currentPage, currentPage+ 5);
 }
 
 const nextPage = () => {
@@ -145,8 +145,8 @@ return (
           <h2>Cart</h2>
           <section className="products-cart">
         {
-          state.cart.length === 0  ? <p>Cart is empty</p> : 
-          state.cart && state.cart.map((item) => {
+          state?.cart.length === 0  ? <p>Cart is empty</p> : 
+          state?.cart && state.cart.map((item) => {
             return (
               <article className="list-cart" key={item.id}>
                 <h3>{item.name}</h3>
