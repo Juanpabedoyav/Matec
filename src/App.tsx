@@ -15,6 +15,7 @@ const {products} = useContext(ProductContext)
 const  [filterType, setFilterType] = useState<Product[]>([])
 const  [currentPage, setCurrentPage] = useState(1)
 
+
 const productsPerPage = () => {
   return products?.slice(currentPage, currentPage+ 5);
 }
@@ -27,15 +28,7 @@ const backPage = () => {
   if(currentPage > 0)
     setCurrentPage(currentPage - 5)
 }
-
-//add product to cart High Order Function
-// const handleAddProduct = (item :Product, stock: number) =>()=> {
-//   if (stock !== 0 ) {
-//     addProduct(item)
-//     item.stock = stock - item.quantity
-//     }
-//   }
-
+//handler submit function
 const handlerSubmit = (item :Product) => (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault()
   const quantity = e.currentTarget.quantity.value
@@ -46,8 +39,6 @@ const handlerSubmit = (item :Product) => (e: React.FormEvent<HTMLFormElement>) =
     }else{
       alert('Out of stock')
     }
-
- 
 } 
 //download JSON funtion
 const downloadJSON = () => {
@@ -96,7 +87,7 @@ const totalOrder = state?.cart.reduce((acc, curr) => acc + curr.totalprice!, 0);
 return (
     <main>
       <header>
-        <nav>
+        <nav className="navbar">
         <h1>Alternova Shop</h1>
           <ul>
             <li><a href="#">Home</a></li>
@@ -104,8 +95,7 @@ return (
           </ul>
         </nav>
       </header>
-        <Search/>
-      <section className="filter-by">
+      <nav className="filter-by">
         {
           filter.map((type) => {
             return (
@@ -113,9 +103,15 @@ return (
               )
             })
           }
-      </section>
-      <button onClick={backPage}>Back</button>
-      <button onClick={nextPage}>Next</button>
+      </nav>
+          <Search/>
+        <section className="pagination">
+          <p>Products: <strong>{productsPerPage().length}</strong> of <strong>{products.length}</strong></p>
+          <article>
+            <button className="preview preview-pagination" onClick={backPage}>Preview</button>
+            <button className="next next-pagination" onClick={nextPage}>Next</button>
+          </article>
+        </section>
       <section className="layaout">
          <section className="products">
           {

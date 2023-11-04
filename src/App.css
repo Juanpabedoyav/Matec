@@ -7,7 +7,7 @@
 .filter-by{
   margin: 1rem 0;
 }
-.filter-type{
+.filter-type, .preview, .next{
     border-radius: 8px;
     margin-right: 0.5rem;
     border: 1px solid transparent;
@@ -18,7 +18,6 @@
     cursor: pointer;
     transition: border-color 0.25s;
     color: #fff;
-    text-transform: capitalize;
 }
 
 .filter-type:hover, .filter-type:focus, .filter-type:active {
@@ -80,7 +79,7 @@ form{
   gap: 1rem;
 }
 
-nav{
+.navbar{
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -100,6 +99,7 @@ li a{
   font-size: 1.2rem;
   font-weight: bold;  
 }
+/* Cart styles */
 aside{
   height: 100%;
   border-radius: 0.5rem;
@@ -141,6 +141,7 @@ aside h3{
   border-bottom : .1rem solid #646cff9f;
 }
 
+/* Helpers */
 .alert{
   z-index: 10;
   position: absolute;
@@ -165,5 +166,12 @@ img{
 .generate-ticket{
   display: flex;
   margin: 1rem 0;
+  justify-content: space-between;
+}
+
+.pagination{
+  margin: 2rem 0 1rem 0;
+  display: flex;
+  max-width: 50%;
   justify-content: space-between;
 }
