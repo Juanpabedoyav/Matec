@@ -125,11 +125,14 @@ return (
             productsPerPage() && productsPerPage().map((item) => {
               return (
                 <article className="list" key={item.id}>
-                  <h3>{item.name}</h3>
-                  <p>${item.unit_price}</p>
-                  <p>{item.type}</p>
-                  <section>
+                  <img height={200}  loading="lazy" src="https://flowbite.com/docs/images/products/apple-watch.png" alt={item.name} />
+                  <section className="description-product">
+                    <h3>{item.name}</h3>
+                    <p>${item.unit_price}</p>
+                    <p>{item.type}</p>
                     {item.stock == 0 ? <p>Out of stock</p> : <p>Stock: {item.stock}</p>} 
+                  </section>
+                  <section>
                     <form onSubmit={handlerSubmit(item)}>
                      <input 
                      name="quantity"
@@ -145,12 +148,15 @@ return (
             ):
               filterType.map((item) => {
                 return (
-                  <article id="list" key={item.id}>
-                    <h3>{item.name}</h3>
-                    <p>${item.unit_price}</p>
-                    <p>{item.type}</p>
-                    <section>
+                  <article className="list" key={item.id}>
+                    <img height={200} loading="lazy"  src="https://flowbite.com/docs/images/products/apple-watch.png" alt={item.name} />
+                    <section className="description-product">
+                      <h3>{item.name}</h3>
+                      <p>${item.unit_price}</p>
+                      <p>{item.type}</p>
                       {item.stock == 0 ? <p>Out of stock</p> : <p>Stock: {item.stock}</p>} 
+                    </section>
+                    <section>
                     <form onSubmit={handlerSubmit(item)}>
                      <input 
                      name="quantity"
