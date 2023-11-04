@@ -6,7 +6,7 @@ import { ProductContext } from "../../context/Products/ProductsContext";
 
 export const Search = () => {
   const {products} = useContext(ProductContext)
-  const debounceRef = useRef<number>();
+  const debounceRef = useRef<NodeJS.Timeout>();
   const [input, setInput] = useState('');
 
   const filterProducts = !input
