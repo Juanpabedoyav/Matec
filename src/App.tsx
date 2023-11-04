@@ -36,12 +36,12 @@ const backPage = () => {
 //     }
 //   }
 
-const handlerSubmit = (item :Product, stock: number) => (e: React.FormEvent<HTMLFormElement>) => {
+const handlerSubmit = (item :Product) => (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault()
   const quantity = e.currentTarget.quantity.value
   const newItemCustomQuantity = {...item, quantity: Number(quantity)}
-  if (stock !== 0 && quantity <= stock) {
-    item.stock = item.stock - 1
+  if (item.stock !== 0 && quantity <= item.stock) {
+    item.stock = item.stock - quantity
     addProduct(newItemCustomQuantity)
     }else{
       alert('Out of stock')
@@ -130,7 +130,7 @@ return (
                   <p>{item.type}</p>
                   <section>
                     {item.stock == 0 ? <p>Out of stock</p> : <p>Stock: {item.stock}</p>} 
-                    <form onSubmit={handlerSubmit(item, item.stock)}>
+                    <form onSubmit={handlerSubmit(item)}>
                      <input 
                      name="quantity"
                      type="number" 
@@ -151,7 +151,14 @@ return (
                     <p>{item.type}</p>
                     <section>
                       {item.stock == 0 ? <p>Out of stock</p> : <p>Stock: {item.stock}</p>} 
-                      <button onClick = { handleAddProduct(item, item.stock)}>Add to Cart</button>
+                    <form onSubmit={handlerSubmit(item)}>
+                     <input 
+                     name="quantity"
+                     type="number" 
+                     defaultValue={1}
+                     />
+                    <button type="submit">Add to Cart</button>
+                    </form>
                     </section>
                   </article>
                 )
