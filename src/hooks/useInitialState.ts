@@ -5,13 +5,10 @@ import {  Product } from "../interfaces/products";
 export interface ShoppingState {
   isOpenOrder: boolean,
     cart: Product[],
-    totalOrder?: number,
-
 }
 const INITIAL_STATE: ShoppingState = {
   isOpenOrder: true,
   cart: [],
-  totalOrder: 0,
 };
 const useInitialState =() =>{
 
@@ -31,7 +28,6 @@ const useInitialState =() =>{
     });
   };
   
-  const totalOrder = () => state.cart.reduce((acc, curr) => acc + curr.totalprice!, 0);
 
   const toogleOrder = () =>{
     setState({
@@ -45,7 +41,7 @@ const useInitialState =() =>{
   return{
     state,
     addProduct,
-    totalOrder,
+    // totalOrder,
     toogleOrder
   };
 

@@ -4,12 +4,11 @@ import { ShoppingContext } from "./context/Shopping/ShoppingContext"
 import { Product } from "./interfaces/products"
 import { Search } from "./components/Search"
 import { ProductContext } from "./context/Products/ProductsContext"
-// import dataProducts from "./data/data.json"
 
 
 function App() {
 //context shopping cart
-const {addProduct,  state, totalOrder} = useContext(ShoppingContext)
+const {addProduct,  state} = useContext(ShoppingContext)
 //context products
 const {products} = useContext(ProductContext)
 //filter by type state
@@ -26,7 +25,7 @@ const handleAddProduct = (item :Product, stock: number) =>()=> {
 const downloadJSON = () => {
   const fileStructure = {
     products: state.cart,
-    totalOrder: totalOrder(),
+    totalOrder: totalOrder,
     totalProducts: state.cart.reduce((acc, item) => acc + item.quantity, 0),
   }
 
@@ -49,8 +48,11 @@ const filterByType = (type: string )  => {
   }
 }
 //get filter type from JSON and remove duplicates
-let filter = products.map((item) =>  item.type)
+let filter = products && products.map((item) =>  item.type) 
 filter = [...new Set(filter)]
+
+const totalCart = state?.cart.reduce((acc, item) => acc + item.quantity, 0)
+const totalOrder = state?.cart.reduce((acc, curr) => acc + curr.totalprice!, 0);
 
 return (
     <main>
@@ -59,7 +61,7 @@ return (
         <h1>Alternova Shop</h1>
           <ul>
             <li><a href="#">Home</a></li>
-            <li><a href="#">Cart <strong>{state.cart.reduce((acc, curr) => acc + curr.quantity!, 0)}</strong></a></li>
+            <li><a href="#">Cart <strong>{totalCart}</strong></a></li>
           </ul>
         </nav>
       </header>
@@ -79,10 +81,10 @@ return (
       <section className="x">
          <section className="products">
           {
-            filterType.length === 0 ?
-            products.map((item) => {
+           filterType.length === 0 ?
+            products && products.map((item) => {
               return (
-                <article id="list" key={item.id}>
+                <article className="list" key={item.id}>
                   <h3>{item.name}</h3>
                   <p>{item.unit_price}</p>
                   <p>{item.type}</p>
@@ -115,10 +117,10 @@ return (
           <h2>Cart</h2>
           <section className="products-cart">
         {
-          state.cart.length === 0 ? <p>Cart is empty</p> : 
-          state.cart.map((item) => {
+          state?.cart === undefined ? <p>Cart is empty</p> : 
+          state.cart && state.cart.map((item) => {
             return (
-              <article id="list-cart" key={item.id}>
+              <article className="list-cart" key={item.id}>
                 <h3>{item.name}</h3>
                 <p>Quantity: {item.quantity}</p>
                 <p>Unit Price: {item.unit_price}</p>
@@ -129,7 +131,7 @@ return (
           )
         }
       </section>
-          <p>Total Order: {totalOrder()}</p>
+          <p>Total Order: {totalOrder}</p>
           <button onClick={downloadJSON}>Total Order</button>
         </aside>
       </section>
