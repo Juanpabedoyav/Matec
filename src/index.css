@@ -3,9 +3,9 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
+  color-scheme: dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #24242498;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -47,12 +47,15 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #646cff;
+button:hover, button:focus, button:active {
+  border-color: #646cff;  
+  background-color: #8d64ff14;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+
 }
 
 @media (prefers-color-scheme: light) {

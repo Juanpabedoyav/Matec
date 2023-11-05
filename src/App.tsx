@@ -1,8 +1,7 @@
-import { useContext, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import './App.css'
 import { ShoppingContext } from "./context/Shopping/ShoppingContext"
 import { Product } from "./interfaces/products"
-import { Search } from "./components/Search"
 import { ProductContext } from "./context/Products/ProductsContext"
 
 
@@ -11,14 +10,20 @@ function App() {
 const {addProduct,  state} = useContext(ShoppingContext)
 //context products
 const {products} = useContext(ProductContext)
-//filter by type state
+//filter by type category
 const  [filterType, setFilterType] = useState<Product[]>([])
+//pagination
 const  [currentPage, setCurrentPage] = useState(1)
-
+//input search
+const [input, setInput] = useState('');
+//input search debounce
+const debounceRef = useRef<NodeJS.Timeout>();
+//products per page function
 const productsPerPage = () => {
   return products?.slice(currentPage, currentPage+ 5);
 }
 
+//pagination function next and back
 const nextPage = () => {
   if(products.length > currentPage + 5)
   setCurrentPage(currentPage + 5)
@@ -27,15 +32,15 @@ const backPage = () => {
   if(currentPage > 0)
     setCurrentPage(currentPage - 5)
 }
-
-//add product to cart High Order Function
-// const handleAddProduct = (item :Product, stock: number) =>()=> {
-//   if (stock !== 0 ) {
-//     addProduct(item)
-//     item.stock = stock - item.quantity
-//     }
-//   }
-
+//handler search function
+const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  e.preventDefault();
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+    setInput(e.target.value);
+    }, 500);
+};
+//handler submit function
 const handlerSubmit = (item :Product) => (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault()
   const quantity = e.currentTarget.quantity.value
@@ -46,8 +51,6 @@ const handlerSubmit = (item :Product) => (e: React.FormEvent<HTMLFormElement>) =
     }else{
       alert('Out of stock')
     }
-
- 
 } 
 //download JSON funtion
 const downloadJSON = () => {
@@ -80,56 +83,64 @@ const downloadJSON = () => {
   URL.revokeObjectURL(url);
 };
 //filter by type function
-const filterByType = (type: string= 'ALL' )  => {
+const filterByType = (type: string )  => {
   const filter = products.filter((item) => item.type === type).slice(currentPage, currentPage+ 5);
   setFilterType(filter)
   setCurrentPage(0) 
  
 }
-//get filter type from JSON and remove duplicates
-let filter = products && products.map((item) =>  item.type) 
+//get filter type for nav from JSON and remove duplicates
+let filter = products && products.map((item) =>  item.type).concat('All').reverse()
 filter = [...new Set(filter)]
 
 const totalCart = state?.cart.reduce((acc, item) => acc + item.quantity, 0)
 const totalOrder = state?.cart.reduce((acc, curr) => acc + curr.totalprice!, 0);
 
+const filterProducts = !input
+? []
+: products.filter((item) =>
+ item.name.toLowerCase().includes(input.toLocaleLowerCase())
+  );
+console.log(filterProducts)
 return (
     <main>
-      <header>
-        <nav>
+      <header className="header-navbar">
+        <nav className="navbar">
         <h1>Alternova Shop</h1>
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Cart <strong>{totalCart}</strong></a></li>
-          </ul>
         </nav>
       </header>
-      <section className="filterBy">
-        <p>Filter By:</p>
-        <button onClick={() => filterByType('ALL')}>All</button>
+      <nav className="filter-by">
         {
           filter.map((type) => {
             return (
-              <button key={type} onClick={ () =>filterByType(type)}>{type}</button>
+              <a className="filter-type" href={`#${type}`} key={type} onClick={ () =>filterByType(type)}>{type}</a>
               )
             })
           }
-      </section>
-      <Search/>
-      <button onClick={backPage}>Back</button>
-      <button onClick={nextPage}>Next</button>
-      <section className="x">
+      </nav>
+       <input className="search-products" onChange={handleSearch} placeholder='Search your product ...' />
+        <section className="pagination">
+          <p>Products: <strong>{productsPerPage().length}</strong> of <strong>{products.length}</strong></p>
+          <article className="pagination-buttons">
+            <button className="preview preview-pagination" onClick={backPage}>Preview</button>
+            <button className="next next-pagination" onClick={nextPage}>Next</button>
+          </article>
+        </section>
+      <section className="layaout">
          <section className="products">
           {
            filterType.length === 0 ?
             productsPerPage() && productsPerPage().map((item) => {
               return (
                 <article className="list" key={item.id}>
-                  <h3>{item.name}</h3>
-                  <p>${item.unit_price}</p>
-                  <p>{item.type}</p>
+                  <img height={200}  loading="lazy" src="https://flowbite.com/docs/images/products/apple-watch.png" alt={item.name} />
+                    <h3>{item.name}</h3>
+                  <section className="description-product">
+                    <p> <strong>${item.unit_price}</strong></p>
+                    <p>Category: <strong>{item.type}</strong></p>
+                  </section>
+                   {item.stock == 0 ? <p className="out-stock">🚨 Out of stock</p> : <p>Stock: <strong>{item.stock}</strong></p>} 
                   <section>
-                    {item.stock == 0 ? <p>Out of stock</p> : <p>Stock: {item.stock}</p>} 
                     <form onSubmit={handlerSubmit(item)}>
                      <input 
                      name="quantity"
@@ -143,14 +154,18 @@ return (
               )
             }
             ):
-              filterType.map((item) => {
+            
+            filterType.map((item) => {
                 return (
-                  <article id="list" key={item.id}>
-                    <h3>{item.name}</h3>
-                    <p>${item.unit_price}</p>
-                    <p>{item.type}</p>
+                  <article className="list" key={item.id}>
+                    <img height={200} loading="lazy"  src="https://flowbite.com/docs/images/products/apple-watch.png" alt={item.name} />
+                      <h3>{item.name}</h3>
+                    <section className="description-product">
+                    <p><strong>${item.unit_price}</strong></p>
+                    <p>Category: <strong>{item.type}</strong></p>
+                    </section>
+                      {item.stock == 0 ? <p className="out-stock">🚨 Out of stock</p> : <p>Stock: <strong>{item.stock}</strong></p>} 
                     <section>
-                      {item.stock == 0 ? <p>Out of stock</p> : <p>Stock: {item.stock}</p>} 
                     <form onSubmit={handlerSubmit(item)}>
                      <input 
                      name="quantity"
@@ -166,11 +181,11 @@ return (
               }
             )
           }
-
         
         </section>
         <aside>
-          <h2>Cart</h2>
+          <h2>Cart  <strong className="total-cart">{totalCart}</strong></h2>
+          
           <section className="products-cart">
         {
           state?.cart.length === 0  ? <p>Cart is empty</p> : 
@@ -178,17 +193,19 @@ return (
             return (
               <article className="list-cart" key={item.id}>
                 <h3>{item.name}</h3>
-                <p>Quantity: x{item.quantity}</p>
-                <p>Unit Price: ${item.unit_price}</p>
-                <p>Total Price:${item.totalprice}</p>
+                <p>Quantity: <strong>x{item.quantity}</strong></p>
+                <p>Unit Price: <strong>${item.unit_price}</strong></p>
+                <p>Total Price: <strong>${item.totalprice}</strong></p>
               </article>
             )
           }
           )
         }
       </section>
-          <p>Total Order: ${totalOrder}</p>
-          <button onClick={downloadJSON}>Total Order</button>
+          <section className="generate-ticket">
+            <p>Total Order Price: <strong>${totalOrder}</strong></p>
+            <button onClick={downloadJSON}>Create Order</button>
+          </section>
         </aside>
       </section>
     </main>
