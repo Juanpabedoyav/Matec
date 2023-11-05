@@ -1,27 +1,31 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite - Alternova Shop 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Requisitos Previos
+Antes de comenzar con este proyecto, asegúrate de tener instalado Node.js y pnpm en tu sistema. Puedes descargar Node.js desde nodejs.org, y pnpm desde pnpm.io.
 
-Currently, two official plugins are available:
+## Instalación
+Sigue estos pasos para configurar y ejecutar la aplicación en tu máquina:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+1. Clona este repositorio:
+```
+git clone https://github.com/Juanpabedoyav/Matec.git
+```
+2. Navega al directorio del proyecto:
+```
+cd Matec
+```
+3. Instala las dependencias con pnpm:
+```
+pnpm install
+```
+## Uso
+Una vez que hayas instalado todas las dependencias, puedes ejecutar la aplicación en un entorno de desarrollo local:
+```
+pnpm dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Esto iniciará el servidor de desarrollo de Vite y abrirá la aplicación en tu navegador predeterminado. Cualquier cambio que realices en el código se reflejará automáticamente en el navegador.
+
+# Contacto
+* bedoyavascojuanpablo@gmail.com
+* juanpabedoyav.com
