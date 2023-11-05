@@ -113,10 +113,18 @@ return (
       <Pagination products={products} productsPerPage={productsPerPage} backPage={backPage} nextPage={nextPage} />
       
       <section className="layaout">
+        {
+          filterProducts.length > 0 && input.length > 0 ?
+          <ProductsList 
+          productsPerPage={() => filterProducts} 
+          handlerSubmit={handlerSubmit}
+        />:
           <ProductsList 
             productsPerPage={filterType.length > 0 ? () => filterType : productsPerPage} 
             handlerSubmit={handlerSubmit}
           />
+        }
+        
           <Shopping totalCart={totalCart} state={state} downloadJSON={downloadJSON} totalOrder={totalOrder}/>
       </section>
     </main>
