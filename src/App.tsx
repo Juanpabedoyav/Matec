@@ -17,7 +17,7 @@ const {addProduct,  state} = useContext(ShoppingContext)
 const {products} = useContext(ProductContext)
 //SEO
 useSeo({
-  title: `Shopping Cart (${state.isOpenOrder ? 'Open Order' : 'Close Order'})`,
+  title: `Shopping Cart (${state?.isOpenOrder ? 'Open Order' : 'Close Order'})`,
   description: 'Shopping Cart Alternova Shop'
 })
 //filter by type category
