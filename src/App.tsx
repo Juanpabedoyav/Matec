@@ -63,7 +63,7 @@ const handlerSubmit = (item :Product) => (e: React.FormEvent<HTMLFormElement>) =
 } 
 //download JSON funtion
 const downloadJSON = () => {
-  const clientProductDetail = state.cart.map((item) => {
+  const clientProductDetail = state?.cart.map((item) => {
     return {
       id: item.id,
       name: item.name,
@@ -78,7 +78,7 @@ const downloadJSON = () => {
     id: crypto.randomUUID(),
     products: clientProductDetail,
     totalOrder: totalOrder,
-    totalProducts: state.cart.reduce((acc, item) => acc + item.quantity, 0),
+    totalProducts: state?.cart.reduce((acc, item) => acc + item.quantity, 0),
   }
 
   const jsonString = JSON.stringify(fileStructure, null, 2);
