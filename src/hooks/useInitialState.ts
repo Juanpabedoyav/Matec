@@ -17,10 +17,12 @@ const useInitialState =() =>{
   const addProduct = (payload: Product) =>{
     const productExist = state.cart.find((item) => item.id === payload.id);
     const newCart = productExist  ? 
-    state.cart.map((item) => item.id === payload.id ? 
-    { ...item, quantity: item.quantity + item.quantity, totalprice: (item.quantity + item.quantity) * item.unit_price} 
-    : item) 
-    : [...state.cart, { ...payload,  totalprice: payload.unit_price * payload.quantity }];
+      state.cart.map((item) => item.id === payload.id ? 
+      { ...item, quantity: item.quantity + payload.quantity, totalprice: (item.quantity + payload.quantity) * item.unit_price}
+      : 
+      item) 
+    : 
+    [...state.cart, { ...payload, totalprice: payload.unit_price * payload.quantity }];
     
     return setState({
         ...state,
