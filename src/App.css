@@ -53,7 +53,7 @@ input.search-products::placeholder{
   color: #fff;
   opacity: 0.4;
 }
-
+/* Products HomeScreen */
 .products{
   width: 100%;
   display: grid;
@@ -90,7 +90,7 @@ form{
   display: flex;
   flex-direction: row;
 }
-
+/* Layaout HomeScreen */
 .layaout{
   margin-top: 1rem;
   display: flex;
@@ -135,7 +135,6 @@ aside{
 aside:hover{
   outline: 1px solid #646cff;
 }
-
 aside h2{
   font-size: 1.8rem;
   margin: 0;
@@ -160,7 +159,6 @@ aside h3{
 .list-cart p{
   width: 30%;
 }
-
 .list-cart {
   border-bottom : .1rem solid #646cff9f;
 }
@@ -214,4 +212,109 @@ img{
 }
 .next:focus, .preview:focus{
   outline: 1px solid #646cff;
+}
+/* Media Queries Mobile*/
+@media screen and (max-width: 768px) {
+  /* Layaout Mobile HomeScreen */
+.layaout{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+  /* Products Mobile HomeScreen */
+.products{
+    width: 100%;
+    grid-template-columns: 1fr ;
+    justify-items: center;
+    margin: 0;
+}
+/* Pagination Styles */
+.pagination{
+  display: flex;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  justify-content: space-between;
+  justify-content: space-around;
+}
+.next:focus, .preview:focus{
+  outline: 1px solid #646cff;
+}
+/* Search Bar Styles */
+input.search-products{
+  display: block;
+  margin: 0 auto;
+  width: 80%;
+}
+
+/* Cart styles */
+aside{
+  /* display: none; */
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+}
+/* filters Navbar */
+.filter-by{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 0.2rem;
+}
+.filter-type{
+  margin: 0;
+}
+
+}
+@media screen and (max-width: 920px)  and (min-width: 768px) {
+  /* Layaout Mobile HomeScreen */
+.layaout{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+  /* Products Mobile HomeScreen */
+.products{
+    width: 100%;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    margin: 0;
+}
+/* Pagination Styles */
+.pagination{
+  display: flex;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  justify-content: space-between;
+  justify-content: space-around;
+}
+.next:focus, .preview:focus{
+  outline: 1px solid #646cff;
+}
+/* Search Bar Styles */
+input.search-products{
+  display: block;
+  margin: 0 auto;
+  width: 80%;
+}
+
+/* Cart styles */
+aside{
+  /* display: none; */
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 2rem;
+}
+/* filters Navbar */
+.filter-by{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 0.2rem;
+}
+.filter-type{
+  margin: 0;
+}
+
 }
