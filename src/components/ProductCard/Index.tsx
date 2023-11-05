@@ -16,7 +16,7 @@ export default function  ProductCard ({item, handlerSubmit}: ProductCardProps) {
             </section>
                 {item.stock == 0 ? <p className="out-stock">🚨 Out of stock</p> : <p>Stock: <strong>{item.stock}</strong></p>} 
             <section>
-                <form onSubmit={handlerSubmit(item)}>
+                <form onSubmit={handlerSubmit(item)} aria-label="list of cards">
                     <input 
                     name="quantity"
                     type="number" 
