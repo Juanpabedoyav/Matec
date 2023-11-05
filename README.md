@@ -21,9 +21,13 @@ pnpm install
 ## Uso
 Una vez que hayas instalado todas las dependencias, puedes ejecutar la aplicación en un entorno de desarrollo local:
 ```
-pnpm dev
+pnpm run dev
 ```
-
+## Test
+Puedes ejecutar los test en un entorno local:
+```
+pnpm run test
+```
 Esto iniciará el servidor de desarrollo de Vite y abrirá la aplicación en tu navegador predeterminado. Cualquier cambio que realices en el código se reflejará automáticamente en el navegador.
 
 # Contacto
