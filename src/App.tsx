@@ -104,13 +104,9 @@ const filterProducts = !input
 console.log(filterProducts)
 return (
     <main>
-      <header>
+      <header className="header-navbar">
         <nav className="navbar">
         <h1>Alternova Shop</h1>
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Cart <strong>{totalCart}</strong></a></li>
-          </ul>
         </nav>
       </header>
       <nav className="filter-by">
@@ -188,7 +184,8 @@ return (
         
         </section>
         <aside>
-          <h2>Cart</h2>
+          <h2>Cart  <strong className="total-cart">{totalCart}</strong></h2>
+          
           <section className="products-cart">
         {
           state?.cart.length === 0  ? <p>Cart is empty</p> : 
