@@ -29,3 +29,10 @@ Esto iniciará el servidor de desarrollo de Vite y abrirá la aplicación en tu 
 # Contacto
 * bedoyavascojuanpablo@gmail.com
 * juanpabedoyav.com
+
+##Lighthouse Test
+### Desktop
+![Image text](https://res.cloudinary.com/dflxhnzgs/image/upload/v1699201464/udna6i7ysyixfbnmxvn2.png)
+
+### Mobile
+![Image text](https://res.cloudinary.com/dflxhnzgs/image/upload/v1699201420/s77lawtid74e2vcbxjib.png)
