@@ -203,8 +203,8 @@ return (
         }
       </section>
           <section className="generate-ticket">
-            <p>Total Order: <strong>${totalOrder}</strong></p>
-            <button onClick={downloadJSON}>Total Order</button>
+            <p>Total Order Price: <strong>${totalOrder}</strong></p>
+            <button onClick={downloadJSON}>Create Order</button>
           </section>
         </aside>
       </section>
