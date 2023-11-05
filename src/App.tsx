@@ -6,6 +6,7 @@ import { ProductContext } from "./context/Products/ProductsContext"
 import NavBar from "./components/NavBar"
 import Pagination from "./components/Pagination"
 import ProductsList from "./components/ProductsList"
+import Shopping from "./components/Shopping"
 
 
 function App() {
@@ -110,37 +111,13 @@ return (
       <NavBar filter={filter} filterByType={filterByType}/>
        <input className="search-products" onChange={handleSearch} placeholder='Search your product ...' />
       <Pagination products={products} productsPerPage={productsPerPage} backPage={backPage} nextPage={nextPage} />
+      
       <section className="layaout">
-        
-         <ProductsList 
-          productsPerPage={filterType.length > 0 ? () => filterType : productsPerPage} 
-          handlerSubmit={handlerSubmit}
-        />
-        
-        <aside>
-          <h2>Cart  <strong className="total-cart">{totalCart}</strong></h2>
-          
-          <section className="products-cart">
-        {
-          state?.cart.length === 0  ? <p>Cart is empty</p> : 
-          state?.cart && state.cart.map((item) => {
-            return (
-              <article className="list-cart" key={item.id}>
-                <h3>{item.name}</h3>
-                <p>Quantity: <strong>x{item.quantity}</strong></p>
-                <p>Unit Price: <strong>${item.unit_price}</strong></p>
-                <p>Total Price: <strong>${item.totalprice}</strong></p>
-              </article>
-            )
-          }
-          )
-        }
-      </section>
-          <section className="generate-ticket">
-            <p>Total Order Price: <strong>${totalOrder}</strong></p>
-            <button onClick={downloadJSON}>Create Order</button>
-          </section>
-        </aside>
+          <ProductsList 
+            productsPerPage={filterType.length > 0 ? () => filterType : productsPerPage} 
+            handlerSubmit={handlerSubmit}
+          />
+          <Shopping totalCart={totalCart} state={state} downloadJSON={downloadJSON} totalOrder={totalOrder}/>
       </section>
     </main>
   )
