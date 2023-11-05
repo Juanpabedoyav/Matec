@@ -5,6 +5,7 @@ import { Product } from "./interfaces/products"
 import { ProductContext } from "./context/Products/ProductsContext"
 import NavBar from "./components/NavBar"
 import Pagination from "./components/Pagination"
+import ProductsList from "./components/ProductsList"
 
 
 function App() {
@@ -108,64 +109,14 @@ return (
     <main>
       <NavBar filter={filter} filterByType={filterByType}/>
        <input className="search-products" onChange={handleSearch} placeholder='Search your product ...' />
-       <Pagination products={products} productsPerPage={productsPerPage} backPage={backPage} nextPage={nextPage} />
+      <Pagination products={products} productsPerPage={productsPerPage} backPage={backPage} nextPage={nextPage} />
       <section className="layaout">
-         <section className="products">
-          {
-           filterType.length === 0 ?
-            productsPerPage() && productsPerPage().map((item) => {
-              return (
-                <article className="list" key={item.id}>
-                  <img height={200}  loading="lazy" src="https://flowbite.com/docs/images/products/apple-watch.png" alt={item.name} />
-                    <h3>{item.name}</h3>
-                  <section className="description-product">
-                    <p> <strong>${item.unit_price}</strong></p>
-                    <p>Category: <strong>{item.type}</strong></p>
-                  </section>
-                   {item.stock == 0 ? <p className="out-stock">🚨 Out of stock</p> : <p>Stock: <strong>{item.stock}</strong></p>} 
-                  <section>
-                    <form onSubmit={handlerSubmit(item)}>
-                     <input 
-                     name="quantity"
-                     type="number" 
-                     defaultValue={1}
-                     />
-                    <button type="submit">Add to Cart</button>
-                    </form>
-                  </section>
-                </article>
-              )
-            }
-            ):
-            
-            filterType.map((item) => {
-                return (
-                  <article className="list" key={item.id}>
-                    <img height={200} loading="lazy"  src="https://flowbite.com/docs/images/products/apple-watch.png" alt={item.name} />
-                      <h3>{item.name}</h3>
-                    <section className="description-product">
-                    <p><strong>${item.unit_price}</strong></p>
-                    <p>Category: <strong>{item.type}</strong></p>
-                    </section>
-                      {item.stock == 0 ? <p className="out-stock">🚨 Out of stock</p> : <p>Stock: <strong>{item.stock}</strong></p>} 
-                    <section>
-                    <form onSubmit={handlerSubmit(item)}>
-                     <input 
-                     name="quantity"
-                     type="number" 
-                     defaultValue={1}
-                     />
-                    <button type="submit">Add to Cart</button>
-                    </form>
-                    </section>
-                  </article>
-                )
-              
-              }
-            )
-          }
         
-        </section>
+         <ProductsList 
+          productsPerPage={filterType.length > 0 ? () => filterType : productsPerPage} 
+          handlerSubmit={handlerSubmit}
+        />
+        
         <aside>
           <h2>Cart  <strong className="total-cart">{totalCart}</strong></h2>
           
