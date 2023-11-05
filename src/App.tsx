@@ -7,6 +7,7 @@ import NavBar from "./components/NavBar"
 import Pagination from "./components/Pagination"
 import ProductsList from "./components/ProductsList"
 import Shopping from "./components/Shopping"
+import useSeo from "./hooks/useSeo"
 
 
 function App() {
@@ -14,6 +15,11 @@ function App() {
 const {addProduct,  state} = useContext(ShoppingContext)
 //context products
 const {products} = useContext(ProductContext)
+//SEO
+useSeo({
+  title: `Shopping Cart (${state?.isOpenOrder ? 'Open Order' : 'Close Order'})`,
+  description: 'Shopping Cart Alternova Shop'
+})
 //filter by type category
 const  [filterType, setFilterType] = useState<Product[]>([])
 //pagination
@@ -26,7 +32,6 @@ const debounceRef = useRef<NodeJS.Timeout>();
 const productsPerPage = () => {
   return products?.slice(currentPage, currentPage+ 5);
 }
-
 //pagination function next and back
 const nextPage = () => {
   if(products.length > currentPage + 5)
@@ -99,13 +104,12 @@ filter = [...new Set(filter)]
 
 const totalCart = state?.cart.reduce((acc, item) => acc + item.quantity, 0)
 const totalOrder = state?.cart.reduce((acc, curr) => acc + curr.totalprice!, 0);
-
+//filter products by input search
 const filterProducts = !input
 ? []
 : products.filter((item) =>
  item.name.toLowerCase().includes(input.toLocaleLowerCase())
   );
-console.log(filterProducts)
 return (
     <main>
       <NavBar filter={filter} filterByType={filterByType}/>
