@@ -4,6 +4,7 @@ import { ShoppingContext } from "./context/Shopping/ShoppingContext"
 import { Product } from "./interfaces/products"
 import { ProductContext } from "./context/Products/ProductsContext"
 import NavBar from "./components/NavBar"
+import Pagination from "./components/Pagination"
 
 
 function App() {
@@ -30,7 +31,7 @@ const nextPage = () => {
   setCurrentPage(currentPage + 5)
 }
 const backPage = () => {
-  if(currentPage > 0)
+  if(currentPage > 1)
     setCurrentPage(currentPage - 5)
 }
 //handler search function
@@ -107,13 +108,7 @@ return (
     <main>
       <NavBar filter={filter} filterByType={filterByType}/>
        <input className="search-products" onChange={handleSearch} placeholder='Search your product ...' />
-        <section className="pagination">
-          <p>Products: <strong>{productsPerPage().length}</strong> of <strong>{products.length}</strong></p>
-          <article className="pagination-buttons">
-            <button className="preview preview-pagination" onClick={backPage}>Preview</button>
-            <button className="next next-pagination" onClick={nextPage}>Next</button>
-          </article>
-        </section>
+       <Pagination products={products} productsPerPage={productsPerPage} backPage={backPage} nextPage={nextPage} />
       <section className="layaout">
          <section className="products">
           {
