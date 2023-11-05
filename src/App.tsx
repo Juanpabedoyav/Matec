@@ -3,6 +3,7 @@ import './App.css'
 import { ShoppingContext } from "./context/Shopping/ShoppingContext"
 import { Product } from "./interfaces/products"
 import { ProductContext } from "./context/Products/ProductsContext"
+import NavBar from "./components/NavBar"
 
 
 function App() {
@@ -104,20 +105,7 @@ const filterProducts = !input
 console.log(filterProducts)
 return (
     <main>
-      <header className="header-navbar">
-        <nav className="navbar">
-        <h1>Alternova Shop</h1>
-        </nav>
-      </header>
-      <nav className="filter-by">
-        {
-          filter.map((type) => {
-            return (
-              <a className="filter-type" href={`#${type}`} key={type} onClick={ () =>filterByType(type)}>{type}</a>
-              )
-            })
-          }
-      </nav>
+      <NavBar filter={filter} filterByType={filterByType}/>
        <input className="search-products" onChange={handleSearch} placeholder='Search your product ...' />
         <section className="pagination">
           <p>Products: <strong>{productsPerPage().length}</strong> of <strong>{products.length}</strong></p>
