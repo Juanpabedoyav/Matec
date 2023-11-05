@@ -3,6 +3,10 @@ import './App.css'
 import { ShoppingContext } from "./context/Shopping/ShoppingContext"
 import { Product } from "./interfaces/products"
 import { ProductContext } from "./context/Products/ProductsContext"
+import NavBar from "./components/NavBar"
+import Pagination from "./components/Pagination"
+import ProductsList from "./components/ProductsList"
+import Shopping from "./components/Shopping"
 
 
 function App() {
@@ -29,7 +33,7 @@ const nextPage = () => {
   setCurrentPage(currentPage + 5)
 }
 const backPage = () => {
-  if(currentPage > 0)
+  if(currentPage > 1)
     setCurrentPage(currentPage - 5)
 }
 //handler search function
@@ -104,109 +108,16 @@ const filterProducts = !input
 console.log(filterProducts)
 return (
     <main>
-      <header className="header-navbar">
-        <nav className="navbar">
-        <h1>Alternova Shop</h1>
-        </nav>
-      </header>
-      <nav className="filter-by">
-        {
-          filter.map((type) => {
-            return (
-              <a className="filter-type" href={`#${type}`} key={type} onClick={ () =>filterByType(type)}>{type}</a>
-              )
-            })
-          }
-      </nav>
+      <NavBar filter={filter} filterByType={filterByType}/>
        <input className="search-products" onChange={handleSearch} placeholder='Search your product ...' />
-        <section className="pagination">
-          <p>Products: <strong>{productsPerPage().length}</strong> of <strong>{products.length}</strong></p>
-          <article className="pagination-buttons">
-            <button className="preview preview-pagination" onClick={backPage}>Preview</button>
-            <button className="next next-pagination" onClick={nextPage}>Next</button>
-          </article>
-        </section>
+      <Pagination products={products} productsPerPage={productsPerPage} backPage={backPage} nextPage={nextPage} />
+      
       <section className="layaout">
-         <section className="products">
-          {
-           filterType.length === 0 ?
-            productsPerPage() && productsPerPage().map((item) => {
-              return (
-                <article className="list" key={item.id}>
-                  <img height={200}  loading="lazy" src="https://flowbite.com/docs/images/products/apple-watch.png" alt={item.name} />
-                    <h3>{item.name}</h3>
-                  <section className="description-product">
-                    <p> <strong>${item.unit_price}</strong></p>
-                    <p>Category: <strong>{item.type}</strong></p>
-                  </section>
-                   {item.stock == 0 ? <p className="out-stock">🚨 Out of stock</p> : <p>Stock: <strong>{item.stock}</strong></p>} 
-                  <section>
-                    <form onSubmit={handlerSubmit(item)}>
-                     <input 
-                     name="quantity"
-                     type="number" 
-                     defaultValue={1}
-                     />
-                    <button type="submit">Add to Cart</button>
-                    </form>
-                  </section>
-                </article>
-              )
-            }
-            ):
-            
-            filterType.map((item) => {
-                return (
-                  <article className="list" key={item.id}>
-                    <img height={200} loading="lazy"  src="https://flowbite.com/docs/images/products/apple-watch.png" alt={item.name} />
-                      <h3>{item.name}</h3>
-                    <section className="description-product">
-                    <p><strong>${item.unit_price}</strong></p>
-                    <p>Category: <strong>{item.type}</strong></p>
-                    </section>
-                      {item.stock == 0 ? <p className="out-stock">🚨 Out of stock</p> : <p>Stock: <strong>{item.stock}</strong></p>} 
-                    <section>
-                    <form onSubmit={handlerSubmit(item)}>
-                     <input 
-                     name="quantity"
-                     type="number" 
-                     defaultValue={1}
-                     />
-                    <button type="submit">Add to Cart</button>
-                    </form>
-                    </section>
-                  </article>
-                )
-              
-              }
-            )
-          }
-        
-        </section>
-        <aside>
-          <h2>Cart  <strong className="total-cart">{totalCart}</strong></h2>
-          
-          <section className="products-cart">
-        {
-          state?.cart.length === 0  ? <p>Cart is empty</p> : 
-          state?.cart && state.cart.map((item) => {
-            return (
-              <article className="list-cart" key={item.id}>
-                <h3>{item.name}</h3>
-                <p>Quantity: <strong>x{item.quantity}</strong></p>
-                <p>Unit Price: <strong>${item.unit_price}</strong></p>
-                <p>Total Price: <strong>${item.totalprice}</strong></p>
-              </article>
-            )
-          }
-          )
-        }
-      </section>
-          <section className="generate-ticket">
-            <p>Total Order Price: <strong>${totalOrder}</strong></p>
-            <button onClick={downloadJSON}>Create Order</button>
-          </section>
-        </aside>
+          <ProductsList 
+            productsPerPage={filterType.length > 0 ? () => filterType : productsPerPage} 
+            handlerSubmit={handlerSubmit}
+          />
+          <Shopping totalCart={totalCart} state={state} downloadJSON={downloadJSON} totalOrder={totalOrder}/>
       </section>
     </main>
   )

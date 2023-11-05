@@ -80,6 +80,11 @@ input.search-products::placeholder{
    text-transform: capitalize;
 
 }
+.unit-price{
+  font-size: 1.3rem;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+  }
 h3{
   font-size: 1.2rem;
   font-weight: bold;
