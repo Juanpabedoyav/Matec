@@ -4,6 +4,8 @@
   width: 100%;
   box-sizing: border-box;
 }
+
+/* filters Navbar */
 .filter-by{
   margin: 1rem 0;
 }
@@ -32,7 +34,25 @@
 
 }
 
-
+/* Search Bar Styles */
+input.search-products{
+  margin: 0.4rem 0 2rem 0;
+  width: 30%;
+  border-radius: 1rem;
+  border: none;
+  padding: 0.6rem;
+  text-decoration: none;
+  font-size: 1rem;
+}
+input.search-products:focus{
+  outline: 1px solid #646cff;
+}
+input.search-products::placeholder{
+  font-size: 1rem;
+  padding-left: 0.5rem;
+  color: #fff;
+  opacity: 0.4;
+}
 
 .products{
   width: 100%;
@@ -168,10 +188,15 @@ img{
   margin: 1rem 0;
   justify-content: space-between;
 }
-
+/* Pagination Styles */
 .pagination{
   margin: 2rem 0 1rem 0;
   display: flex;
+  width: 50%;
+  min-width: 50%;
   max-width: 50%;
   justify-content: space-between;
+}
+.next:focus, .preview:focus{
+  outline: 1px solid #646cff;
 }

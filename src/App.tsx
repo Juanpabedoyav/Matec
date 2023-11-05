@@ -1,8 +1,7 @@
-import { useContext, useState } from "react"
+import { useContext, useRef, useState } from "react"
 import './App.css'
 import { ShoppingContext } from "./context/Shopping/ShoppingContext"
 import { Product } from "./interfaces/products"
-import { Search } from "./components/Search"
 import { ProductContext } from "./context/Products/ProductsContext"
 
 
@@ -11,15 +10,20 @@ function App() {
 const {addProduct,  state} = useContext(ShoppingContext)
 //context products
 const {products} = useContext(ProductContext)
-//filter by type state
+//filter by type category
 const  [filterType, setFilterType] = useState<Product[]>([])
+//pagination
 const  [currentPage, setCurrentPage] = useState(1)
-
-
+//input search
+const [input, setInput] = useState('');
+//input search debounce
+const debounceRef = useRef<NodeJS.Timeout>();
+//products per page function
 const productsPerPage = () => {
   return products?.slice(currentPage, currentPage+ 5);
 }
 
+//pagination function next and back
 const nextPage = () => {
   if(products.length > currentPage + 5)
   setCurrentPage(currentPage + 5)
@@ -28,6 +32,14 @@ const backPage = () => {
   if(currentPage > 0)
     setCurrentPage(currentPage - 5)
 }
+//handler search function
+const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  e.preventDefault();
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+    setInput(e.target.value);
+    }, 500);
+};
 //handler submit function
 const handlerSubmit = (item :Product) => (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault()
@@ -71,19 +83,25 @@ const downloadJSON = () => {
   URL.revokeObjectURL(url);
 };
 //filter by type function
-const filterByType = (type: string= 'ALL' )  => {
+const filterByType = (type: string )  => {
   const filter = products.filter((item) => item.type === type).slice(currentPage, currentPage+ 5);
   setFilterType(filter)
   setCurrentPage(0) 
  
 }
-//get filter type from JSON and remove duplicates
+//get filter type for nav from JSON and remove duplicates
 let filter = products && products.map((item) =>  item.type).concat('All').reverse()
 filter = [...new Set(filter)]
 
 const totalCart = state?.cart.reduce((acc, item) => acc + item.quantity, 0)
 const totalOrder = state?.cart.reduce((acc, curr) => acc + curr.totalprice!, 0);
 
+const filterProducts = !input
+? []
+: products.filter((item) =>
+ item.name.toLowerCase().includes(input.toLocaleLowerCase())
+  );
+console.log(filterProducts)
 return (
     <main>
       <header>
@@ -104,10 +122,10 @@ return (
             })
           }
       </nav>
-          <Search/>
+       <input className="search-products" onChange={handleSearch} placeholder='Search your product ...' />
         <section className="pagination">
           <p>Products: <strong>{productsPerPage().length}</strong> of <strong>{products.length}</strong></p>
-          <article>
+          <article className="pagination-buttons">
             <button className="preview preview-pagination" onClick={backPage}>Preview</button>
             <button className="next next-pagination" onClick={nextPage}>Next</button>
           </article>
@@ -140,7 +158,8 @@ return (
               )
             }
             ):
-              filterType.map((item) => {
+            
+            filterType.map((item) => {
                 return (
                   <article className="list" key={item.id}>
                     <img height={200} loading="lazy"  src="https://flowbite.com/docs/images/products/apple-watch.png" alt={item.name} />
@@ -166,7 +185,6 @@ return (
               }
             )
           }
-
         
         </section>
         <aside>
